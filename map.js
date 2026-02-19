@@ -26,7 +26,7 @@ var svg = d3.select("#main")
   .append("svg")
   .attr("width", width)
   .attr("height", height)
-  .attr("transform", "translate(-500, 0)")
+  .attr("transform", "translate(0, 0)")
 
 var colorScale = d3.scaleOrdinal()
     .domain([0, 1])
@@ -43,34 +43,34 @@ var xScale = d3.scaleLinear()
 var legend = svg.append("g")
     .attr("id", "legend")
 
-legend
-    .selectAll("rect")
-    .data([
-        "Options to vote early-in person and by mail available to all voters.",
-        "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
-        "No early in-person voting option available to all voters. Eligible reason required to vote by mail."
-    ])
-    .enter()
-    .append("rect")
-        .attr("fill", (d, i) => colorScale(d))
-        .attr("width", 20)
-        .attr("height", 20)
-        .attr("x", 10)
-        .attr("y", (d, i) => i * 40 + 200)
+// legend
+//     .selectAll("rect")
+//     .data([
+//         "Options to vote early-in person and by mail available to all voters.",
+//         "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
+//         "No early in-person voting option available to all voters. Eligible reason required to vote by mail."
+//     ])
+//     .enter()
+//     .append("rect")
+//         .attr("fill", (d, i) => colorScale(d))
+//         .attr("width", 20)
+//         .attr("height", 20)
+//         .attr("x", 10)
+//         .attr("y", (d, i) => i * 40 + 200)
 
-legend
-    .selectAll("text")
-    .data([
-        "Options to vote early-in person and by mail available to all voters.",
-        "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
-        "No early in-person voting option available to all voters. Eligible reason required to vote by mail."
-    ])
-    .enter()
-    .append("text")
-        .text(d => d)
-        .attr("x", 35)
-        .attr("y", (d, i) => i * 40 + 215)
-        .attr("width", 100)
+// legend
+//     .selectAll("text")
+//     .data([
+//         "Options to vote early-in person and by mail available to all voters.",
+//         "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
+//         "No early in-person voting option available to all voters. Eligible reason required to vote by mail."
+//     ])
+//     .enter()
+//     .append("text")
+//         .text(d => d)
+//         .attr("x", 35)
+//         .attr("y", (d, i) => i * 40 + 215)
+//         .attr("width", 100)
 
 
 // #endregion
@@ -161,11 +161,11 @@ var selectionsText = selectionOptions
 // #endregion
 
 // #region YEAR TIMELINE
-var yearOptions = svg.append("g")
-    .attr("id", "year-options")
+var yearTimeline = svg.append("g")
+    .attr("id", "year-timeline")
 
 // rect connecting years
-var yearRect = yearOptions
+var yearRect = yearTimeline
     .append("rect")
     .attr("id", d => "year-rect")
     .attr("x", d => xScale(2000))
@@ -174,63 +174,39 @@ var yearRect = yearOptions
     .attr("height", 2)
     .attr("fill", "#bebebe");
 
-var midtermYears = yearOptions
+// circles for each year 
+var yearOptions = yearTimeline
     .append("g")
-    .attr("id", "midterm")
+    .attr("id", "year-options")
     .selectAll("circle")
-    .data(yearList[1].years)
+    .data(yearList[0].years)
     .enter()
     .append("circle")
         .attr("id", d => "circle-" + d.year)
-        .attr("cx", function(d) {return xScale(d.year); })
+        .attr("cx", d => xScale(d.year))
         .attr("cy", 20)
         .attr("r", 10)
-        .style("fill", "#bebebe");
-
-var presidentialYears = yearOptions
-    .append("g")
-    .attr("id", "presidential")
-    .selectAll("circle")
-    .data(yearList[2].years)
-    .enter()
-    .append("circle")
-        .attr("id", d => "circle-" + d.year)
-        .attr("cx", function(d) {return xScale(d.year); })
-        .attr("cy", 20)
-        .attr("r", 10)
-        .style("fill", "#bebebe");
+        .style("fill", "#bebebe")
+        .classed("presidential", d => (d.year - 2000) % 4 == 0)
+        .classed("midterm", d => (d.year - 2000) % 4 != 0);
 
 // add text below circles
-var yearLabels = svg.append("g")
+var yearLabels = yearTimeline
+    .append("g")
     .attr("id", "year-labels")
-
-var midtermLabels = yearLabels
-    .append("g")
-    .attr("id", "midterm")
     .selectAll("text")
-    .data(yearList[1].years)
+    .data(yearList[0].years)
     .enter()
     .append("text")
-        .text(function(d) {return d.year })
-        .attr("x", function(d) {return xScale(d.year); })
+        .text(d => d.year)
+        .attr("x", d => xScale(d.year))
         .attr("y", 50)
         .attr("fill", "black")
-        .attr("text-anchor", "middle");
+        .attr("text-anchor", "middle")
+        .classed("presidential", d => (d.year - 2000) % 4 == 0)
+        .classed("midterm", d => (d.year - 2000) % 4 != 0);
 
-var presidentialLabels = yearLabels
-    .append("g")
-    .attr("id", "midterm")
-    .selectAll("text")
-    .data(yearList[2].years)
-    .enter()
-    .append("text")
-        .text(function(d) {return d.year })
-        .attr("x", function(d) {return xScale(d.year); })
-        .attr("y", 50)
-        .attr("fill", "black")
-        .attr("text-anchor", "middle");
-
-let yearSelect = 0;
+let yearSelect = 0; // tracks year option selected (all, presidential, midterm)
 
 // #endregion
 
@@ -241,7 +217,7 @@ var playButton = svg.append("g")
         .attr("id", "play")
         .attr("d", "M0,0 L8,5 L0,10 L0,0")
         .attr("fill", "#bebebe")
-        .attr("transform", "translate(180, 8.5) scale(2.5)")
+        .attr("transform", "translate(180, 10.1) scale(2.3)")
     .on("mouseover", function(event, d) {
         d3.select(this)
             .style("stroke", "#243a76")
@@ -260,7 +236,7 @@ var pauseButton = svg.append("g")
         .attr("id", "pause")
         .attr("d", "M0,0 L0,10 L2,10 L2,0 L0,0 M4,0 L4,10 L6,10 L6,0 L4,0")
         .attr("fill", "#bebebe")
-        .attr("transform", "translate(220, 8.5) scale(2.5)")
+        .attr("transform", "translate(220, 10.1) scale(2.3)")
     .on("mouseover", function(event, d) {
         d3.select(this)
             .style("stroke", "#243a76")
@@ -527,8 +503,9 @@ Promise.all([
     // #endregion
 
     // #region YEAR TIMELINE BUTTON FUNCTIONS
-    function initMidtermYears () {
-        midtermYears
+    function initYearOptions(type) {
+        d3.selectAll("." + type)
+            .attr("opacity", 1)
             .on("click", function(e,d) {
                 timer.stop()
                 playing = false;
@@ -559,137 +536,62 @@ Promise.all([
             });
     }
 
-    function initPresidentialYears () {
-        presidentialYears
-            .on("click", function(e, d) {
-                timer.stop()
-                playing = false;
-                updateMap(d.year)
+    initYearOptions("presidential");
+    initYearOptions("midterm");
 
-                d3.select(this)
-                    .style("fill", "#243a76")
-
-                d3.select("#play")
-                    .transition()
-                    .duration(500)
-                    .attr("fill", "#bebebe");
-
-                d3.select("#pause")
-                    .transition()
-                    .duration(500)
-                    .attr("fill", "#bebebe");
+    function disableYearOptions(type) {
+        d3.selectAll("." + type)
+            .attr("opacity", 0.1)
+            .on("click", function() {
+                return;
             })
-            .on("mouseover", function(e, d) {
-                d3.select(this)
-                    .style("stroke", "#243a76")
-                    .style("stroke-width", 1.2)
-                    .style("cursor", "pointer");
+            .on("mouseover", function() {
+                return;
             })
-            .on("mouseout", function(event, d) {
-                d3.select(this)
-                    .style("stroke-width", 0);
+            .on("mouseout",function() {
+                return;
             });
     }
 
-    initMidtermYears();
-    initPresidentialYears();
-
-    // #endregion
-
-    // #region TOOLTIP
-    var toolTip = d3.select("body")
-        .append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
-    map
-        .on("mouseover", function(e, d) {
-            d3.select(this)
-                .attr("stroke-width", 2.2);
-            toolTip.style("opacity", 1)
-                //.html(d.properties.name + "\t" + d.properties.value)
-                //.style("left", (e.pageX-25) + "px")
-                //.style("top", (e.pageY-75) + "px");
-        })
-        .on("mouseout", function(d) {
-            d3.select(this)
-                .attr("stroke-width", 1);
-            toolTip.style("opacity", 0);
-        })
-        .on("mousemove", function(e, d) {
-            toolTip
-                .html(d.name)
-                .style("left", (d3.pointer(e)[0]+100) + "px")
-                .style("top", (d3.pointer(e)[1]+100) + "px")
-        });
-
-    // #endregion
-
     // #region SELECTION BEHAVIOR
-    function selectionBehavior(year, opacity1, opacity2) {
-        currYear = (year - 2000) / 2;
-        timer.stop();
-        updateMap(year);
 
-        presidentialLabels.attr("opacity", opacity1)
-        presidentialYears.attr("opacity", opacity1)
-        midtermLabels.attr("opacity", opacity2)
-        midtermYears.attr("opacity", opacity2)
-    }
+    // stops timer and updates map to smallest year in selected option
+    // then deactivates the deselected years
     selections
         .on("click", function(e, d, i) {
-            selectionIndex = d.index;
             selections.attr("opacity", 0);
             selectionsText.attr("opacity", 0);
             selectionBarSelected = false;
-            
             selectionBarText.text(d.option);
 
-            if (selectionIndex == 1) { // midterm
+            yearSelect = d.index;
+
+            if (yearSelect == 1) { // midterm
             yearRect // update year rectangle
                 .attr("x", xScale(2002))
                 .attr("width", xScale(2026) - xScale(2002))
 
-            selectionBehavior(2002, 0.1, 1);
-            initMidtermYears();
+            initYearOptions("midterm");
+            disableYearOptions("presidential");
+            updateMap(2002);
 
-            presidentialYears
-                .on("click", function() {
-                    return;
-                })
-                .on("mouseover", function() {
-                    return;
-                })
-                .on("mouseout",function() {
-                    return;
-                });
-
-        } else if (selectionIndex == 2) { // presidental
+        } else if (yearSelect == 2) { // presidental
             yearRect
                 .attr("x", xScale(2000))
                 .attr("width", xScale(2024) - xScale(2000));
 
-            selectionBehavior(2000, 1, 0.1);
-            initPresidentialYears();
+            initYearOptions("presidential");
+            disableYearOptions("midterm");
+            updateMap(2000);
 
-            midtermYears
-                .on("click", function() {
-                    return;
-                })
-                .on("mouseover", function() {
-                    return;
-                })
-                .on("mouseout",function() {
-                    return;
-                });
-
-        } else if (selectionIndex == 0) { // all
+        } else if (yearSelect == 0) { // all
             yearRect
                 .attr("x", xScale(2000))
                 .attr("width", xScale(2026) - xScale(2000));
 
-            selectionBehavior(2000, 1, 1);
-            initPresidentialYears();
-            initMidtermYears();
+            initYearOptions("presidential");
+            initYearOptions("midterm");
+            updateMap(2000);
         }
     })
 
