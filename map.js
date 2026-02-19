@@ -1,3 +1,4 @@
+// #region SETUP
 d3.select("#main")
     .append("h1")
     .text("Options to Vote Before Election Day, 2000-2024")
@@ -32,14 +33,54 @@ var colorScale = d3.scaleOrdinal()
     .range(["#3b9171","#efc55b", "#ef7f4d"]);
 
 var xScale = d3.scaleLinear()
-    .domain([2000, 2024])
-    .range([270, width-15]);
+    .domain([2000, 2026])
+    .range([270, width-20]);
 
-// selection menu
+// #endregion
 
-var selectionBarSelected = false;
-var selectionIndex = 0;
+// #region LEGEND
 
+var legend = svg.append("g")
+    .attr("id", "legend")
+
+legend
+    .selectAll("rect")
+    .data([
+        "Options to vote early-in person and by mail available to all voters.",
+        "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
+        "No early in-person voting option available to all voters. Eligible reason required to vote by mail."
+    ])
+    .enter()
+    .append("rect")
+        .attr("fill", (d, i) => colorScale(d))
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("x", 10)
+        .attr("y", (d, i) => i * 40 + 200)
+
+legend
+    .selectAll("text")
+    .data([
+        "Options to vote early-in person and by mail available to all voters.",
+        "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
+        "No early in-person voting option available to all voters. Eligible reason required to vote by mail."
+    ])
+    .enter()
+    .append("text")
+        .text(d => d)
+        .attr("x", 35)
+        .attr("y", (d, i) => i * 40 + 215)
+        .attr("width", 100)
+
+
+// #endregion
+
+// #region SELECTION MENU
+
+var selectionBarSelected = false; // tracks whether the dropdown menu is down
+var selectionIndex = 0; // tracks which option is selected
+
+// main selection bar
 var selectionContainer = svg.append("g")
     .attr("id", "selection-container")
 
@@ -77,6 +118,7 @@ var selectionBarText = selectionContainer.append("text")
     .attr("x", 10)
     .attr("y", 27)
 
+// dropdown options
 var selectionOptions = selectionContainer.append("g")
     .attr("id", "selection-options")
 
@@ -116,17 +158,23 @@ var selectionsText = selectionOptions
     .attr("opacity", 0)
     .attr("font-size", "12px")
 
-// timeline of years with circles as buttons 
-svg.append("g")
-    .attr("id", "year-options")
-    .append("rect")
-        .attr("x", 260)
-        .attr("y", 20)
-        .attr("width", width - 280)
-        .attr("height", 2)
-        .attr("fill", "#bebebe")
+// #endregion
 
-var midtermYears = d3.select("#year-options")
+// #region YEAR TIMELINE
+var yearOptions = svg.append("g")
+    .attr("id", "year-options")
+
+// rect connecting years
+var yearRect = yearOptions
+    .append("rect")
+    .attr("id", d => "year-rect")
+    .attr("x", d => xScale(2000))
+    .attr("y", 20)
+    .attr("width", d => xScale(2026) - xScale(2000))
+    .attr("height", 2)
+    .attr("fill", "#bebebe");
+
+var midtermYears = yearOptions
     .append("g")
     .attr("id", "midterm")
     .selectAll("circle")
@@ -136,10 +184,10 @@ var midtermYears = d3.select("#year-options")
         .attr("id", d => "circle-" + d.year)
         .attr("cx", function(d) {return xScale(d.year); })
         .attr("cy", 20)
-        .attr("r", 12)
+        .attr("r", 10)
         .style("fill", "#bebebe");
 
-var presidentialYears = d3.select("#year-options")
+var presidentialYears = yearOptions
     .append("g")
     .attr("id", "presidential")
     .selectAll("circle")
@@ -149,14 +197,14 @@ var presidentialYears = d3.select("#year-options")
         .attr("id", d => "circle-" + d.year)
         .attr("cx", function(d) {return xScale(d.year); })
         .attr("cy", 20)
-        .attr("r", 12)
+        .attr("r", 10)
         .style("fill", "#bebebe");
 
 // add text below circles
 var yearLabels = svg.append("g")
     .attr("id", "year-labels")
 
-var midtermLabels = d3.select("#year-labels")
+var midtermLabels = yearLabels
     .append("g")
     .attr("id", "midterm")
     .selectAll("text")
@@ -169,7 +217,7 @@ var midtermLabels = d3.select("#year-labels")
         .attr("fill", "black")
         .attr("text-anchor", "middle");
 
-var presidentialLabels = d3.select("#year-labels")
+var presidentialLabels = yearLabels
     .append("g")
     .attr("id", "midterm")
     .selectAll("text")
@@ -184,7 +232,9 @@ var presidentialLabels = d3.select("#year-labels")
 
 let yearSelect = 0;
 
-// play button
+// #endregion
+
+// #region PLAY AND PAUSE BUTTONS
 var playButton = svg.append("g")
     .attr("id", "play-button")
     .append("path")
@@ -192,6 +242,16 @@ var playButton = svg.append("g")
         .attr("d", "M0,0 L8,5 L0,10 L0,0")
         .attr("fill", "#bebebe")
         .attr("transform", "translate(180, 8.5) scale(2.5)")
+    .on("mouseover", function(event, d) {
+        d3.select(this)
+            .style("stroke", "#243a76")
+            .style("stroke-width", 0.3)
+            .style("cursor", "pointer");
+    })
+    .on("mouseout", function(event, d) {
+        d3.select(this)
+            .style("stroke-width", 0);
+    });
 
 // pause button
 var pauseButton = svg.append("g")
@@ -200,7 +260,19 @@ var pauseButton = svg.append("g")
         .attr("id", "pause")
         .attr("d", "M0,0 L0,10 L2,10 L2,0 L0,0 M4,0 L4,10 L6,10 L6,0 L4,0")
         .attr("fill", "#bebebe")
-        .attr("transform", "translate(220, 8.5) scale(2.5)");
+        .attr("transform", "translate(220, 8.5) scale(2.5)")
+    .on("mouseover", function(event, d) {
+        d3.select(this)
+            .style("stroke", "#243a76")
+            .style("stroke-width", 0.3)
+            .style("cursor", "pointer");
+    })
+    .on("mouseout", function(event, d) {
+        d3.select(this)
+            .style("stroke-width", 0);
+    });
+
+// #endregion
 
 // legend
 
@@ -213,7 +285,7 @@ Promise.all([
     d3.csv("VBED_temp.csv"),
     d3.json("tile_map.json")
 ]).then(function([data, tileMap]) {
-    // blank map
+    // #region MAP SETUP
     var mapContainer = svg.append("g")
         .attr("id", "map-container")
 
@@ -242,10 +314,11 @@ Promise.all([
             .attr("font-size", "2px")
             .attr("text-anchor", "middle")
 
-    mapContainer.attr("transform", "scale(8) translate(20, 5)")
+    mapContainer.attr("transform", "translate(160, 40) scale(8)")
 
+    // #endregion
 
-    // group data by year and ranking
+    // #region BAR CHART SETUP
     var barData = d3.rollups(data,
         v => v.length,
         d => d.Ranking,
@@ -311,7 +384,9 @@ Promise.all([
     barChart
         .attr("transform", "translate (10, 85)")
 
-    // update map based on input variable
+    // #endregion
+
+    // #region UPDATE MAP
     function updateMap(inputYear) {
         currYear = (inputYear - 2000) / 2; // update currYear based on inputYear
 
@@ -389,10 +464,12 @@ Promise.all([
             .text(barData[0][1].sort()[currYear][1]);
     }
 
+    // #endregion
+
     // initialize map
     updateMap(2000);
 
-    // animate through years
+    // #region TIMER
     var timerFunc = function() {
         if (yearSelect == 2) { // presidential
             currYear = (currYear + 2) % 14;
@@ -447,9 +524,9 @@ Promise.all([
                 .attr("fill", "#bebebe");
         })
 
+    // #endregion
 
-
-    // functions for midterm/presidential button behavior
+    // #region YEAR TIMELINE BUTTON FUNCTIONS
     function initMidtermYears () {
         midtermYears
             .on("click", function(e,d) {
@@ -517,7 +594,9 @@ Promise.all([
     initMidtermYears();
     initPresidentialYears();
 
-    // tooltip functions
+    // #endregion
+
+    // #region TOOLTIP
     var toolTip = d3.select("body")
         .append("div")
         .attr("class", "tooltip")
@@ -543,7 +622,9 @@ Promise.all([
                 .style("top", (d3.pointer(e)[1]+100) + "px")
         });
 
-    // button behavior based on the selected year type
+    // #endregion
+
+    // #region SELECTION BEHAVIOR
     function selectionBehavior(year, opacity1, opacity2) {
         currYear = (year - 2000) / 2;
         timer.stop();
@@ -564,8 +645,13 @@ Promise.all([
             selectionBarText.text(d.option);
 
             if (selectionIndex == 1) { // midterm
+            yearRect // update year rectangle
+                .attr("x", xScale(2002))
+                .attr("width", xScale(2026) - xScale(2002))
+
             selectionBehavior(2002, 0.1, 1);
             initMidtermYears();
+
             presidentialYears
                 .on("click", function() {
                     return;
@@ -578,8 +664,13 @@ Promise.all([
                 });
 
         } else if (selectionIndex == 2) { // presidental
+            yearRect
+                .attr("x", xScale(2000))
+                .attr("width", xScale(2024) - xScale(2000));
+
             selectionBehavior(2000, 1, 0.1);
             initPresidentialYears();
+
             midtermYears
                 .on("click", function() {
                     return;
@@ -592,34 +683,18 @@ Promise.all([
                 });
 
         } else if (selectionIndex == 0) { // all
+            yearRect
+                .attr("x", xScale(2000))
+                .attr("width", xScale(2026) - xScale(2000));
+
             selectionBehavior(2000, 1, 1);
             initPresidentialYears();
             initMidtermYears();
         }
     })
+
+    // #endregion
+
 });
 
 // event listeners
-playButton
-    .on("mouseover", function(event, d) {
-        d3.select(this)
-            .style("stroke", "#243a76")
-            .style("stroke-width", 0.3)
-            .style("cursor", "pointer");
-    })
-    .on("mouseout", function(event, d) {
-        d3.select(this)
-            .style("stroke-width", 0);
-    });
-
-pauseButton
-    .on("mouseover", function(event, d) {
-        d3.select(this)
-            .style("stroke", "#243a76")
-            .style("stroke-width", 0.3)
-            .style("cursor", "pointer");
-    })
-    .on("mouseout", function(event, d) {
-        d3.select(this)
-            .style("stroke-width", 0);
-    });
