@@ -20,7 +20,7 @@ var yearList = [
 ]
 
 var width = 666;
-var height = 700;
+var height = 750;
 
 var margin = {
     left: 20,
@@ -56,22 +56,40 @@ legend
         .attr("width", 20)
         .attr("height", 20)
         .attr("x", 20)
-        .attr("y", (d, i) => i * 30 + 590)
+        .attr("y", (d, i) => i * 45 + 600)
 
-legend
+legendText = legend.append("g")
+    .attr("id", "legend-text")
     .selectAll("text")
     .data([
-        "Options to vote early in-person and by mail available to all voters.",
-        "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
-        "No early in-person voting option available to all voters. Eligible reason required to vote by mail."
+        {
+            text:"Options to vote early in-person and by mail",
+            subtitle: "available to all voters."
+        },
+        {
+            text: "Option to vote early in-person available to all voters.",
+            subtitle: "Eligible reason required to vote by mail."
+        },
+        {
+            text:"No early in-person voting option available to all voters.",
+            subtitle: "Eligible reason required to vote by mail."
+        }
     ])
     .enter()
     .append("text")
-        .text(d => d)
         .attr("x", 45)
-        .attr("y", (d, i) => i * 30 + 605)
-        .attr("width", 100)
-        .attr("font-size", "11pt");
+        .attr("y", (d, i) => i * 45 + 605)
+        .attr("font-size", "11pt")
+
+legendText.append("tspan")
+    .text(d => d.text);
+
+legendText.append("tspan")
+    .text(d => d.subtitle)
+    .attr("x", 45)
+    .attr("dy", "1.2em");
+
+
 
 covidLegend = legend.append("text")
     .attr("id", "legend-covid")
@@ -344,11 +362,9 @@ Promise.all([
         d => d.Year
     );
 
-    console.log(barData)
-
     var barScaleX = d3.scaleLinear()
         .domain([0, 50])
-        .range([0, width - 480 - 25]);
+        .range([0, 200]);
 
     var barScaleY = d3.scaleLinear()
         .domain([0, 2])
@@ -362,7 +378,7 @@ Promise.all([
         .append("rect")
             .attr("y", barScaleY(0))
             .attr("x", 0)
-            .attr("height", 25)
+            .attr("height", 20)
             .attr("width", 150)
             .attr("fill", "#bebebe")
 
@@ -370,7 +386,7 @@ Promise.all([
         .append("rect")
             .attr("y", barScaleY(1))
             .attr("x", 0)
-            .attr("height", 25)
+            .attr("height", 20)
             .attr("width", 150)
             .attr("fill", "#bebebe")
 
@@ -378,7 +394,7 @@ Promise.all([
         .append("rect")
             .attr("y", barScaleY(2))
             .attr("x", 0)
-            .attr("height", 25)
+            .attr("height", 20)
             .attr("width", 150)
             .attr("fill", "#bebebe")
 
@@ -403,11 +419,11 @@ Promise.all([
             .attr("x", 0)
             .attr("y", 0)
             .attr("width", 1)
-            .attr("height", 145)
+            .attr("height", 140)
             .attr("fill", "#555555ff")
 
     barChart
-        .attr("transform", "translate (480, 400)")
+        .attr("transform", "translate (400, 585)")
 
     // #endregion
 
