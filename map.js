@@ -61,7 +61,7 @@ legend
 legend
     .selectAll("text")
     .data([
-        "Options to vote early-in person and by mail available to all voters.",
+        "Options to vote early in-person and by mail available to all voters.",
         "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
         "No early in-person voting option available to all voters. Eligible reason required to vote by mail."
     ])
@@ -80,9 +80,6 @@ covidLegend = legend.append("text")
     .attr("y", 605 - 30)
     .attr("opacity", 0)
     .attr("font-size", "10pt")
-
-
-
 
 // #endregion
 
@@ -154,7 +151,10 @@ var selections = selectionOptions
         .attr("fill", "#ebebeb")
         .attr("opacity", 0)
     .on("mouseover", function() {
-        if (selectionBarSelected) {
+        if (!selectionBarSelected) {
+            d3.select(this)
+                .style("cursor", "default");
+        } else if (selectionBarSelected) {
             d3.select(this)
                 .style("stroke", "#243a76")
                 .style("stroke-width", 0.7)
@@ -300,7 +300,8 @@ Promise.all([
             .attr("height", 5 * mapSize)
             .attr("fill", "#bebebe");
 
-    var mapAbb = mapContainer.append("g")
+    // state abbreviations for tiles
+    mapContainer.append("g")
         .attr("id", "map-abb")
         .selectAll("text")
         .data(tileMap.states)
@@ -313,7 +314,8 @@ Promise.all([
             .attr("font-size", "14px")
             .attr("text-anchor", "middle")
 
-    var mapAsterisk = mapContainer.append("g")
+    // COVID asterisks
+    mapContainer.append("g")
         .attr("id", "map-ast")
         .selectAll("text")
         .data(tileMap.states)
@@ -329,7 +331,7 @@ Promise.all([
             .attr("opacity", 0)
             .classed("noAst", true);
 
-    
+    // centering map
     var mapWidth = d3.select('#map-container').node().getBoundingClientRect().width;
     mapContainer.attr("transform", "translate(" + (width-mapWidth) / 2 + ", 50)")
 
@@ -652,13 +654,23 @@ Promise.all([
     // then deactivates the deselected years
     selections
         .on("click", function(e, d, i) {
+            if (!selectionBarSelected) {
+                return;
+            }
+
+            // update selections
             selections.attr("opacity", 0);
             selectionsText.attr("opacity", 0);
-            selectionBarSelected = false;
-            selectionBarText.text(d.option);
-            selectionTri.attr("fill", "#dbdbdb");
             selections.style("cursor", "default");
 
+            // update selection bar
+            selectionBarSelected = false;
+            selectionBarText.text(d.option);
+
+            // update arrow
+            selectionTri.attr("fill", "#dbdbdb");
+
+            // reset timer
             timer.stop();
             playButton
                 .transition()
