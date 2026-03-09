@@ -331,6 +331,7 @@ Promise.all([
             .attr("fill", "black")
             .attr("font-size", "14px")
             .attr("text-anchor", "middle")
+            .attr("font-weight", "bold");
 
     // COVID asterisks
     mapContainer.append("g")
@@ -426,8 +427,6 @@ Promise.all([
         .attr("transform", "translate (400, 585)")
 
     // #endregion
-
-    // #region 2020
 
 
     // #endregion
@@ -725,6 +724,7 @@ Promise.all([
     })
 
     // #endregion
+
 
     d3.selectAll("text").style("pointer-events", "none");
 
