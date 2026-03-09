@@ -1,5 +1,13 @@
 // #region SETUP
-d3.select("#main")
+d3.select("body")
+    .append("div")
+    .attr("id", "vbed-map")
+    .style("display", "flex")
+    .style("justify-content", "center")
+    .style("align-items", "center")
+    .style("flex-direction", "column")
+
+d3.select("#vbed-map")
     .append("h1")
     .text("Options to Vote Before Election Day, 2000-2026")
 
@@ -27,7 +35,7 @@ var margin = {
     right: 20
 }
 
-var svg = d3.select("#main")
+var svg = d3.select("#vbed-map")
   .append("svg")
   .attr("width", width)
   .attr("height", height);
@@ -88,8 +96,6 @@ legendText.append("tspan")
     .text(d => d.subtitle)
     .attr("x", 45)
     .attr("dy", "1.2em");
-
-
 
 covidLegend = legend.append("text")
     .attr("id", "legend-covid")
@@ -306,7 +312,8 @@ Promise.all([
 
     var mapSize = 8;
 
-    var map = mapContainer.append("g")
+    // rectangles for map
+    mapContainer.append("g")
         .attr("id", "map")
         .selectAll("rect")
         .data(tileMap.states)
