@@ -303,8 +303,8 @@ let currYear = 0;
 
 // load data
 Promise.all([
-    d3.csv("VBED.csv"),
-    d3.json("tile_map.json")
+    d3.csv("data/VBED.csv"),
+    d3.json("data/tile_map.json")
 ]).then(function([data, tileMap]) {
     // #region MAP SETUP
     var mapContainer = svg.append("g")
