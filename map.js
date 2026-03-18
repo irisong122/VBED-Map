@@ -44,9 +44,25 @@ var colorScale = d3.scaleOrdinal()
     .domain([4, 3, 2, 1])
     .range(["#3b9171", "#3b9171","#efc55b", "#ef7f4d"]);
 
+var abbColorScale = d3.scaleOrdinal()
+    .domain([4, 3, 2, 1])
+    .range(["#ffffff", "#ffffff","#000000", "#000000"]);
+
 var xScale = d3.scaleLinear()
     .domain([2000, 2026])
     .range([65, width-margin.right]);
+
+var policyScale = d3.scaleOrdinal()
+    .domain([0, 1, 2])
+    .range([
+        "Options to vote early in-person and by mail available to all voters: ",
+        "Option to vote early in person available to all voters. Eligible reason required to vote by mail: ",
+        "No option to vote early in-person. Eligible reason required to vote by mail: "
+    ])
+
+var listScale = d3.scaleOrdinal()
+    .domain([0, 1, 2])
+    .range(["Green.png", "Yellow.png", "Red.png"])
 
 // #endregion
 
@@ -295,7 +311,19 @@ var pauseButton = svg.append("g")
 
 // #endregion
 
-// legend
+// #region TEXT
+
+var yearText = d3.select("#vbed-map")
+    .append("div")
+    .attr("id", "year-text")
+    .style("max-width", "666px")
+    .style("text-align", "left")
+
+var policies = yearText.append("div")
+    .attr("id", "policies-text")
+    .append("ul")
+
+// #endregion
 
 // keeps track of the current year selected
 let currYear = 0;
@@ -304,8 +332,9 @@ let currYear = 0;
 // load data
 Promise.all([
     d3.csv("data/VBED.csv"),
-    d3.json("data/tile_map.json")
-]).then(function([data, tileMap]) {
+    d3.json("data/tile_map.json"),
+    d3.json("data/policy_text.json")
+]).then(function([data, tileMap, policyText]) {
     // #region MAP SETUP
     var mapContainer = svg.append("g")
         .attr("id", "map-container")
@@ -326,7 +355,7 @@ Promise.all([
             .attr("fill", "#bebebe");
 
     // state abbreviations for tiles
-    mapContainer.append("g")
+    var mapAbb = mapContainer.append("g")
         .attr("id", "map-abb")
         .selectAll("text")
         .data(tileMap.states)
@@ -335,7 +364,7 @@ Promise.all([
             .text(d => d.abb)
             .attr("x", d => d.x * mapSize + 19)
             .attr("y", d => d.y * mapSize + 25)
-            .attr("fill", "black")
+            .attr("fill", "#bebebe")
             .attr("font-size", "14px")
             .attr("text-anchor", "middle")
             .attr("font-weight", "bold");
@@ -351,7 +380,7 @@ Promise.all([
             .attr("id", d => "ast-" + d.name)
             .attr("x", d => d.x * mapSize + 32)
             .attr("y", d => d.y * mapSize + 23)
-            .attr("fill", "black")
+            .attr("fill", "white")
             .attr("font-size", "13px")
             .attr("text-anchor", "middle")
             .attr("opacity", 0)
@@ -502,6 +531,11 @@ Promise.all([
                 return colorScale(d.value)
             });
 
+        mapAbb
+            .transition()
+            .duration(750)
+            .attr("fill", d => abbColorScale(d.value))
+
         // update circle selection
         d3.selectAll("circle")
             .transition()
@@ -549,6 +583,46 @@ Promise.all([
             .duration(750)
             .attr("x", barScaleX(barData[0][1].sort()[currYear][1]) + 10)
             .text(barData[0][1].sort()[currYear][1]);
+
+        // update text
+        d3.selectAll("li").remove(); // remove any bullets to get a clear page
+
+        var policyBullets = policies
+            .selectAll("li")
+            .data(policyText.policy[currYear])
+            .enter()
+            .append("li")
+                .text((d, i) => policyScale(i))
+                .style("list-style-image", (d, i) => "url(images/" + listScale(i) + ")");
+
+        policyBullets
+            .append("span")
+                .style("font-weight", "bold")
+                .text(d => d.states + " ");
+
+        policyBullets.each(function(d) {
+            if (d.change != null) {
+                d3.select(this)
+                    .append("span")
+                    .text("(" + d.change + ")")
+            }
+
+            var currList = d3.select(this)
+                .append("ul")
+
+            if (d.bullets != null) {
+                d.bullets.forEach(function(d) {
+                    currList
+                        .append("li")
+                        .text(d)
+                        .style("list-style-image", "none");
+                })
+
+            }    
+        });
+
+        d3.selectAll("li")
+            .style("font-size", "1.25rem")
     }
 
     // #endregion

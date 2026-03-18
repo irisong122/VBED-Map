@@ -1,0 +1,125 @@
+{"policy": [
+    [
+        {"states": "21 states", "change": null, "bullets": [
+            "Implemented early in-person and mail voting: Alaska, Arizona, California, Colorado, Hawaii, Idaho, Iowa, Kansas, Maine, Montana, Nebraska, Nevada, New Mexico, North Carolina, North Dakota, Oklahoma, Oregon, Vermont, Washington, Wisconsin, and Wyoming"
+        ]},
+        {"states": "3 states", "change": null, "bullets": [
+            "Implemented early in-person voting: Arkansas, Tennessee, and Texas"
+        ]},
+        {"states": "26 states & D.C.", "change": null, "bullets": null}
+    ],
+    [
+        {"states": "22 states", "change": "increase of 1 state from 2000", "bullets": [
+            "Implemented early in-person and mail voting: Florida"
+        ]},
+        {"states": "4 states", "change": "increase of 1 state from 2000", "bullets": [
+            "Implemented early in-person voting: West Virginia"
+        ]},
+        {"states": "24 states & D.C.", "change": "decrease of 2 states from 2000", "bullets": null}
+    ],
+    [
+        {"states": "24 states", "change": "increase of 2 states from 2002", "bullets": [
+            "Implemented early in-person and mail voting: South Dakota and Utah"
+        ]},
+        {"states": "6 states", "change": "increase of 2 states from 2002", "bullets": [
+            "Implemented early in-person voting: Georgia and Indiana"
+        ]},
+        {"states": "20 states & D.C.", "change": "decrease of 4 states from 2002", "bullets": null}
+    ],
+    [
+        {"states": "28 states", "change": "increase of 4 states from 2004", "bullets": [
+            "Implemented early in-person and mail voting: Maryland, New Jersey, and Ohio",
+            "Implemented mail voting: Georgia"
+        ]},
+        {"states": "7 states", "change": "increase of 2 states and decrease of 1 states from 2004", "bullets": [
+            "Implemented early in-person voting: Illinois and Louisiana",
+            "Moved to the category above because mail voting was implemented: Georgia"
+        ]},
+        {"states": "15 states & D.C.", "change": "decrease of 5 states from 2004", "bullets": null}
+    ],
+    [
+        {"states": "28 states", "change": "no change from 2006", "bullets": null},
+        {"states": "7 states", "change": "no change from 2006", "bullets": null},
+        {"states": "15 states & D.C.", "change": "no change from 2006", "bullets": null}
+    ],
+    [
+        {"states": "29 states & D.C.", "change": "increase of 1 state & D.C. from 2008", "bullets": [
+            "Implemented early in-person and mail voting: Washington, D.C.",
+            "Implemented mail voting: Illinois"
+        ]},
+        {"states": "6 states", "change": "decrease of 1 state from 2008", "bullets": [
+            "Moved to the category above because mail voting was implemented: Illinois"
+        ]},
+        {"states": "15 states", "change": "decrease of 1 jurisdiction from 2008", "bullets": null}
+    ],
+    [
+        {"states": "30 states & D.C.", "change": "increase of 1 state from 2010", "bullets": [
+            "Implemented early in-person and mail voting: Rhode Island"
+        ]},
+        {"states": "6 states", "change": "no change from 2010", "bullets": null},
+        {"states": "14 states", "change": "decrease of 1 state from 2010", "bullets": null}
+    ],
+    [
+        {"states": "31 states & D.C.", "change": "increase of 1 state from 2012", "bullets": [
+            "Implemented early in-person and mail voting: Minnesota"
+        ]},
+        {"states": "6 states", "change": "no change from 2012", "bullets": null},
+        {"states": "13 states", "change": "decrease of 1 state from 2012", "bullets": null}
+    ],
+    [
+        {"states": "31 states & D.C.", "change": "no change from 2014", "bullets": null},
+        {"states": "7 states", "change": "increase of 1 state from 2014", "bullets": [
+            "Implemented early in-person voting: Massachusetts"
+        ]},
+        {"states": "12 states", "change": "decrease of 1 state from 2014", "bullets": null}
+    ],
+    [
+        {"states": "31 states & D.C.", "change": "no change from 2016", "bullets": null},
+        {"states": "7 states", "change": "no change from 2016", "bullets": null},
+        {"states": "12 states", "change": "no change from 2016", "bullets": null}
+    ],
+    [
+        {"states": "45 states & D.C.", "change": "increase of 3 states and temporary increase of 11 states from 2018", "bullets": [
+            "Implemented early in-person and mail voting: Michigan, Pennsylvania, and Virginia",
+            "Implemented temporary policy expansions allowing for early in-person and mail voting due to the COVID-19 emergency: Alabama, Connecticut, Delaware, Kentucky, Missouri, New Hampshire, and South Carolina",
+            "Implemented temporary policy expansions allowing for mail voting due to the COVID-19 emergency: Arkansas, Massachusetts, New York, and West Virginia"
+        ]},
+        {"states": "4 states", "change": "temporary decrease of 4 states from 2018", "bullets": [
+            "Implemented early in-person voting: New York",
+            "Moved to the category above because mail voting was temporarily implemented due to the COVID-19 emergency: Arkansas, Massachusetts, New York, and West Virginia"
+        ]},
+        {"states": "1 state", "change": "decrease of 3 states and temporary decrease of 8 states from 2018", "bullets": null}
+    ],
+    [
+        {"states": "37 states & D.C.", "change": "increase of 1 state and decrease of 8 states from 2020; 2 states maintained temporary COVID-19 policy expansions from 2020", "bullets": [
+            "Implemented early in-person and mail voting: Massachusetts",
+            "Maintained temporary policy expansions allowing for early in-person and mail voting due to the COVID-19 emergency: Connecticut",
+            "Maintained temporary policy expansions allowing for mail voting due to the COVID-19 emergency: New York",
+            "Moved to the category below because temporary COVID-19 policy expansions for mail voting ended: Arkansas, Delaware, Kentucky, Missouri, South Carolina, and West Virginia",
+            "Moved two categories below because temporary COVID-19 policy expansions for early in-person and mail voting ended: Alabama and New Hampshire"
+        ]},
+        {"states": "10 states", "change": "increase of 6 states from 2020", "bullets": [
+            "Implemented early in-person voting: Delaware, Kentucky, Missouri, and South Carolina",
+            "Ended temporary policy expansions allowing for mail voting in the COVID-19 pandemic: Arkansas, Delaware, Kentucky, Missouri, South Carolina, & West Virginia "
+        ]},
+        {"states": "3 states", "change": "increase of 2 states from 2020", "bullets": [
+            "Ended temporary policy expansions allowing for early in-person and mail voting in the COVID-19 pandemic: Alabama and New Hampshire"
+        ]}
+    ],
+    [
+        {"states": "36 states & D.C.", "change": "increase of 1 state and decrease of 1 state from 2022", "bullets": [
+            "Implemented mail voting: New York",
+            "Moved to the category below because temporary COVID-19 policy expansions for mail voting ended: Connecticut"
+        ]},
+        {"states": "11 states", "change": "increase of 1 state from 2022", "bullets": [
+            "Implemented early in-person voting: Connecticut",
+            "Ended temporary policy expansions allowing for mail voting in the COVID-19 pandemic: Connecticut"
+        ]},
+        {"states": "3 states", "change": "no changes from 2022", "bullets": null}
+    ],
+    [
+        {"states": "36 states & D.C.", "change": "no change from 2024", "bullets": null},
+        {"states": "11 states", "change": "no change from 2024", "bullets": null},
+        {"states": "3 states", "change": "no changes from 2024", "bullets": null}
+    ]
+]}
