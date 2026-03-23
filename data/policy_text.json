@@ -1,11 +1,7 @@
 {"policy": [
     [
-        {"states": "21 states", "change": "21 states", "bullets": [
-            "Implemented early in-person and mail voting: AK, AZ, CA, CO, HI, ID, IA, KS, ME, MT, NE, NV, NM, NC, ND, OK, OR, VT, WA, WI, and WY"
-        ]},
-        {"states": "3 states", "change": "3 states", "bullets": [
-            "Implemented early in-person voting: AR, TN, and TX"
-        ]},
+        {"states": "21 states", "change": "21 states", "bullets": null},
+        {"states": "3 states", "change": "3 states", "bullets": null},
         {"states": "26 states & D.C.", "change": "26 states & D.C.", "bullets": null}
     ],
     [
