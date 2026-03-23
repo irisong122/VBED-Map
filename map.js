@@ -509,7 +509,7 @@ Promise.all([
             .duration(500)
             .attr("opacity", 1);
 
-        if (inputYear == 2020 | inputYear == 2022 | inputYear == 2024) {
+        if (inputYear == 2020 | inputYear == 2022) {
             covidLegend
                 .transition()
                 .duration(500)
