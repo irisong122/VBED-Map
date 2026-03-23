@@ -2,10 +2,9 @@
 d3.select("body")
     .append("div")
     .attr("id", "vbed-map")
-    .style("display", "flex")
+    .style("display", "grid")
     .style("justify-content", "center")
     .style("align-items", "center")
-    .style("flex-direction", "column")
 
 d3.select("#vbed-map")
     .append("h1")
@@ -55,9 +54,9 @@ var xScale = d3.scaleLinear()
 var policyScale = d3.scaleOrdinal()
     .domain([0, 1, 2])
     .range([
-        "Options to vote early in-person and by mail available to all voters: ",
-        "Option to vote early in person available to all voters. Eligible reason required to vote by mail: ",
-        "No option to vote early in-person. Eligible reason required to vote by mail: "
+        "Early In-Person and Mail Voting: ",
+        "Early In-Person Voting: ",
+        "No Early In-Person or Mail Voting: "
     ])
 
 var listScale = d3.scaleOrdinal()
@@ -377,7 +376,7 @@ Promise.all([
         .enter()
         .append("text")
             .text("*")
-            .attr("id", d => "ast-" + d.name)
+            .attr("id", d => "ast-" + d.abb)
             .attr("x", d => d.x * mapSize + 32)
             .attr("y", d => d.y * mapSize + 23)
             .attr("fill", "white")
@@ -484,11 +483,11 @@ Promise.all([
                     tileMap.states[j].value = dataValue; // once match is found, update value based on year
 
                     if (data[i].COVID == 1) {
-                        d3.select("#ast-" + dataState)
+                        d3.select("#ast-" + tileMap.states[j].abb)
                             .classed("noAst", false)
                             .classed("ast", true)
                     } else {
-                        d3.select("#ast-" + dataState)
+                        d3.select("#ast-" + tileMap.states[j].abb)
                             .classed("noAst", true)
                             .classed("ast", false);
                     }
@@ -598,15 +597,9 @@ Promise.all([
         policyBullets
             .append("span")
                 .style("font-weight", "bold")
-                .text(d => d.states + " ");
+                .text(d => d.change + " ");
 
         policyBullets.each(function(d) {
-            if (d.change != null) {
-                d3.select(this)
-                    .append("span")
-                    .text("(" + d.change + ")")
-            }
-
             var currList = d3.select(this)
                 .append("ul")
 
