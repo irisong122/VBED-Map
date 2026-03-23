@@ -29,11 +29,11 @@
     [
         {"states": "28 states", "change": "increase of 4 states from 2004", "bullets": [
             "Implemented early in-person and mail voting: MD, NJ, and OH",
-            "Implemented mail voting: Georgia"
+            "Implemented mail voting: GA"
         ]},
         {"states": "7 states", "change": "increase of 2 states and decrease of 1 states from 2004", "bullets": [
             "Implemented early in-person voting: IL and LA",
-            "Moved to the category above because mail voting was implemented: Georgia"
+            "Moved to the category above because mail voting was implemented: GA"
         ]},
         {"states": "15 states & D.C.", "change": "decrease of 5 states from 2004", "bullets": null}
     ],
@@ -85,7 +85,7 @@
             "Implemented temporary policy expansions allowing for mail voting due to the COVID-19 emergency: AR, MA, NY, and WV"
         ]},
         {"states": "4 states", "change": "temporary decrease of 4 states from 2018", "bullets": [
-            "Implemented early in-person voting: New York",
+            "Implemented early in-person voting: NY",
             "Moved to the category above because mail voting was temporarily implemented due to the COVID-19 emergency: AR, MA, NY, and WV"
         ]},
         {"states": "1 state", "change": "decrease of 3 states and temporary decrease of 8 states from 2018", "bullets": null}
@@ -99,7 +99,7 @@
             "Moved two categories below because temporary COVID-19 policy expansions for early in-person and mail voting ended: AL and NH"
         ]},
         {"states": "10 states", "change": "increase of 6 states from 2020", "bullets": [
-            "Implemented early in-person voting: Delaware, Kentucky, Missouri, and South Carolina",
+            "Implemented early in-person voting: DE, KY, MO, and SC",
             "Ended temporary policy expansions allowing for mail voting in the COVID-19 pandemic: AR, DE, KY, MO, SC, & WV"
         ]},
         {"states": "3 states", "change": "increase of 2 states from 2020", "bullets": [
