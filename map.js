@@ -5,6 +5,10 @@ d3.select("body")
     .style("display", "grid")
     .style("justify-content", "center")
     .style("align-items", "center")
+    .style("flex-direction", "column")
+    .style("max-width", "666px")
+    .style("margin-left", "auto")
+    .style("margin-right", "auto");
 
 d3.select("#vbed-map")
     .append("h1")
@@ -36,8 +40,8 @@ var margin = {
 
 var svg = d3.select("#vbed-map")
   .append("svg")
-  .attr("width", width)
-  .attr("height", height);
+  .attr("width", "100%")
+  .attr("viewBox", "0 0 675 750");
 
 var colorScale = d3.scaleOrdinal()
     .domain([4, 3, 2, 1])
@@ -65,9 +69,30 @@ var listScale = d3.scaleOrdinal()
 
 // #endregion
 
+
+// #region DOWNLOAD
+var downloadContainer = svg.append("g")
+    .attr("id", "download-container")
+
+svg.append("g")
+    .attr("id", "download-button")
+    .append("rect")
+    .attr("x", 20)
+    .attr("y", 725)
+    .attr("width", 20)
+    .attr("height", 20)
+    .on("click", function() {
+        saveSvgAsPng(d3.select("#download-container").node(), "chart.png", {scale: 3, backgroundColor: "white"});
+    })
+
+// #endregion
+
 // #region LEGEND
 
-var legend = svg.append("g")
+var legendContainer = downloadContainer.append("g")
+    .attr("id", "legend-container")
+
+var legend = legendContainer.append("g")
     .attr("id", "legend")
 
 legend
@@ -79,46 +104,56 @@ legend
         .attr("width", 20)
         .attr("height", 20)
         .attr("x", 20)
-        .attr("y", (d, i) => i * 45 + 600)
+        .attr("y", (d, i) => i * 30 + 600)
 
 legendText = legend.append("g")
     .attr("id", "legend-text")
     .selectAll("text")
     .data([
         {
-            text:"Options to vote early in-person and by mail",
-            subtitle: "available to all voters."
+            text:"Options to vote early in-person and by mail available to all voters.",
         },
         {
-            text: "Option to vote early in-person available to all voters.",
-            subtitle: "Eligible reason required to vote by mail."
+            text: "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
         },
         {
-            text:"No early in-person voting option available to all voters.",
-            subtitle: "Eligible reason required to vote by mail."
+            text:"No early in-person voting option available to all voters. Eligible reason required to vote by mail.",
         }
     ])
     .enter()
     .append("text")
         .attr("x", 45)
-        .attr("y", (d, i) => i * 45 + 605)
+        .attr("y", (d, i) => i * 30 + 615)
         .attr("font-size", "11pt")
 
 legendText.append("tspan")
     .text(d => d.text);
 
-legendText.append("tspan")
-    .text(d => d.subtitle)
-    .attr("x", 45)
-    .attr("dy", "1.2em");
-
-covidLegend = legend.append("text")
+covidLegend = legendContainer.append("text")
     .attr("id", "legend-covid")
     .text("*Indicates a temporary COVID-19 policy expansion due to the COVID-19 emergency.")
     .attr("x", 45)
     .attr("y", 605 - 30)
     .attr("opacity", 0)
     .attr("font-size", "10pt")
+
+legendContainer.append("text")
+    .attr("id", "source-text")
+    .text("Source: CEIR, \"The Expansion of Voting Before Election Day, 2000 - 2026\"")
+    .attr("x", 50)
+    .attr("y", 715)
+    .attr("font-size", "10pt")
+    .attr("fill", "#555555")
+
+legendContainer.append("svg:image")
+    .attr("xlink:href", "images/CEIR_Logo_Vertical_OneColor_LightBlue.png")
+    .attr("x", width - 50)
+    .attr("y", 670)
+    .attr("width", 50)
+    .attr("height", 50);
+
+var legendWidth = legend.node().getBoundingClientRect().width;
+legend.attr("transform", "translate(" + ((width-legendWidth) / 2) + ", -30)")
 
 // #endregion
 
@@ -335,7 +370,7 @@ Promise.all([
     d3.json("data/policy_text.json")
 ]).then(function([data, tileMap, policyText]) {
     // #region MAP SETUP
-    var mapContainer = svg.append("g")
+    var mapContainer = downloadContainer.append("g")
         .attr("id", "map-container")
 
     var mapSize = 8;
@@ -384,6 +419,18 @@ Promise.all([
             .attr("text-anchor", "middle")
             .attr("opacity", 0)
             .classed("noAst", true);
+
+    var mapHeader = downloadContainer.append("g")
+        .attr("id", "map-header")
+        .attr("class", "download")
+        .append("text")
+        .text("Options to Vote Before Election Day: " + (2000 + currYear/4) + " General Election")
+        .attr("y", 50)
+        .attr("font-size", 24)
+        .attr("font-weight", "bold")
+
+    var headerWidth = mapHeader.node().getBoundingClientRect().width;
+    mapHeader.attr("transform", "translate(" + ((width-headerWidth) / 2) + ", 0)")
 
     // centering map
     var mapWidth = d3.select('#map-container').node().getBoundingClientRect().width;
@@ -497,6 +544,11 @@ Promise.all([
             }
 
         }
+
+        // update header
+        mapHeader.text("Options to Vote Before Election Day: " + inputYear + " General Election")
+        mapWidth = d3.select('#map-container').node().getBoundingClientRect().width;
+        mapContainer.attr("transform", "translate(" + (width-mapWidth) / 2 + ", 50)")
 
         // update asterisk
         d3.selectAll(".noAst")
