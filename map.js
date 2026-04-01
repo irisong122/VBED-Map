@@ -5,6 +5,9 @@ d3.select("body")
     .style("display", "grid")
     .style("justify-content", "center")
     .style("align-items", "center")
+    .style("max-width", "666px")
+    .style("margin-left", "auto")
+    .style("margin-right", "auto");
 
 d3.select("#vbed-map")
     .append("h1")
@@ -36,8 +39,8 @@ var margin = {
 
 var svg = d3.select("#vbed-map")
   .append("svg")
-  .attr("width", width)
-  .attr("height", height);
+  .attr("width", "100%")
+  .attr("viewBox", "0 0 675 750");
 
 var colorScale = d3.scaleOrdinal()
     .domain([4, 3, 2, 1])
