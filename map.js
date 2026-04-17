@@ -3,8 +3,6 @@ d3.select("body")
     .append("div")
     .attr("id", "vbed-map")
     .style("display", "grid")
-    .style("justify-content", "center")
-    .style("align-items", "center")
     .style("max-width", "666px")
     .style("margin-left", "auto")
     .style("margin-right", "auto");
@@ -60,7 +58,10 @@ var policyScale = d3.scaleOrdinal()
         "Early In-Person and Mail Voting: ",
         "Early In-Person Voting: ",
         "No Early In-Person or Mail Voting: "
-    ])
+    ]);
+
+var bodyWidth = document.getElementsByTagName("body")[0].getBoundingClientRect().width;
+
 
 var listScale = d3.scaleOrdinal()
     .domain([0, 1, 2])
@@ -390,7 +391,8 @@ Promise.all([
 
     // centering map
     var mapWidth = d3.select('#map-container').node().getBoundingClientRect().width;
-    mapContainer.attr("transform", "translate(" + (width-mapWidth) / 2 + ", 50)")
+    var mapx = d3.select('#map-container').node().getBoundingClientRect().x;
+    mapContainer.attr("transform", "translate(" + ((666-mapWidth) / 2 - (mapx-((bodyWidth-666)/2))) + ", 50)")
 
     // #endregion
 
@@ -623,9 +625,6 @@ Promise.all([
 
     // #endregion
 
-    // initialize map
-    updateMap(2000);
-
     // #region TIMER
     var timerFunc = function() {
         if (yearSelect == 2) { // presidential
@@ -684,7 +683,7 @@ Promise.all([
     // #endregion
 
     // #region YEAR TIMELINE BUTTON FUNCTIONS
-    function initYearOptions(type) {
+    function enableYearOptions(type) {
         d3.selectAll("." + type)
             .attr("opacity", 1)
             .on("click", function(e,d) {
@@ -720,8 +719,8 @@ Promise.all([
             .attr("opacity", 1);
     }
 
-    initYearOptions("presidential");
-    initYearOptions("midterm");
+    enableYearOptions("presidential");
+    enableYearOptions("midterm");
 
     function disableYearOptions(type) {
         d3.selectAll("." + type)
@@ -776,7 +775,7 @@ Promise.all([
                 .attr("x", xScale(2002))
                 .attr("width", xScale(2026) - xScale(2002))
 
-            initYearOptions("midterm");
+            enableYearOptions("midterm");
             disableYearOptions("presidential");
             updateMap(2002);
 
@@ -785,7 +784,7 @@ Promise.all([
                 .attr("x", xScale(2000))
                 .attr("width", xScale(2024) - xScale(2000));
 
-            initYearOptions("presidential");
+            enableYearOptions("presidential");
             disableYearOptions("midterm");
             updateMap(2000);
 
@@ -794,16 +793,17 @@ Promise.all([
                 .attr("x", xScale(2000))
                 .attr("width", xScale(2026) - xScale(2000));
 
-            initYearOptions("presidential");
-            initYearOptions("midterm");
+            enableYearOptions("presidential");
+            enableYearOptions("midterm");
             updateMap(2000);
         }
     })
 
     // #endregion
 
-
     d3.selectAll("text").style("pointer-events", "none");
+
+    updateMap(2000);
 
 });
 
