@@ -103,31 +103,23 @@ legend
         .attr("fill", (d, i) => colorScale(d))
         .attr("width", 20)
         .attr("height", 20)
-        .attr("x", 20)
+        .attr("x", 0)
         .attr("y", (d, i) => i * 30 + 600)
 
 legendText = legend.append("g")
     .attr("id", "legend-text")
     .selectAll("text")
     .data([
-        {
-            text:"Options to vote early in-person and by mail available to all voters.",
-        },
-        {
-            text: "Option to vote early in-person available to all voters. Eligible reason required to vote by mail.",
-        },
-        {
-            text:"No early in-person voting option available to all voters. Eligible reason required to vote by mail.",
-        }
+        {text:"Options to vote early in-person and by mail available to all voters."},
+        {text: "Option to vote early in-person available to all voters. Eligible reason required to vote by mail."},
+        {text:"No early in-person voting option available to all voters. Eligible reason required to vote by mail."}
     ])
     .enter()
     .append("text")
-        .attr("x", 45)
+        .attr("x", 25)
         .attr("y", (d, i) => i * 30 + 615)
         .attr("font-size", "11pt")
-
-legendText.append("tspan")
-    .text(d => d.text);
+        .text(d => d.text)
 
 covidLegend = legendContainer.append("text")
     .attr("id", "legend-covid")
@@ -140,15 +132,15 @@ covidLegend = legendContainer.append("text")
 legendContainer.append("text")
     .attr("id", "source-text")
     .text("Source: CEIR, \"The Expansion of Voting Before Election Day, 2000 - 2026\"")
-    .attr("x", 50)
+    .attr("x", 25)
     .attr("y", 715)
     .attr("font-size", "10pt")
     .attr("fill", "#555555")
 
 legendContainer.append("svg:image")
     .attr("xlink:href", "images/CEIR_Logo_Vertical_OneColor_LightBlue.png")
-    .attr("x", width - 50)
-    .attr("y", 670)
+    .attr("x", width-35)
+    .attr("y", 665)
     .attr("width", 50)
     .attr("height", 50);
 
@@ -424,13 +416,24 @@ Promise.all([
         .attr("id", "map-header")
         .attr("class", "download")
         .append("text")
-        .text("Options to Vote Before Election Day: " + (2000 + currYear/4) + " General Election")
+        .text("Options to Vote Before Election Day: ")
         .attr("y", 50)
+        .attr("font-size", 24)
+        .attr("font-weight", "bold")
+
+    var mapSubheader = downloadContainer.append("g")
+        .attr("id", "map-subheader")
+        .attr("class", "download")
+        .append("text")
+        .text("2000 General Election")
+        .attr("y", 75)
         .attr("font-size", 24)
         .attr("font-weight", "bold")
 
     var headerWidth = mapHeader.node().getBoundingClientRect().width;
     mapHeader.attr("transform", "translate(" + ((width-headerWidth) / 2) + ", 0)")
+    var subheaderWidth = mapSubheader.node().getBoundingClientRect().width;
+    mapSubheader.attr("transform", "translate(" + ((width-subheaderWidth) / 2) + ", 0)")
 
     // centering map
     var mapWidth = d3.select('#map-container').node().getBoundingClientRect().width;
@@ -546,9 +549,7 @@ Promise.all([
         }
 
         // update header
-        mapHeader.text("Options to Vote Before Election Day: " + inputYear + " General Election")
-        mapWidth = d3.select('#map-container').node().getBoundingClientRect().width;
-        mapContainer.attr("transform", "translate(" + (width-mapWidth) / 2 + ", 50)")
+        mapSubheader.text(inputYear + " General Election")
 
         // update asterisk
         d3.selectAll(".noAst")
